@@ -15,7 +15,7 @@ class Task < ActiveRecord::Base
 
   belongs_to :board
 
-  validates_presence_of :title
+  validates_presence_of :title, :board
 
   scope :completed, -> { where.not(completed_at: nil) }
   scope :incomplete, -> { where(completed_at: nil) }
