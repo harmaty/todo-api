@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe 'Tasks API' do
   let!(:board) { create(:board) }
   let!(:tasks) do
-    create_list(:task, 15, board_id: board.id)
-    create_list(:task, 5, board_id: board.id, completed_at: Time.now)
+    create_list(:task, 15, board: board)
+    create_list(:task, 5, board: board, completed_at: Time.now)
   end
   let(:board_id) { board.id }
   let(:id) { tasks.first.id }
