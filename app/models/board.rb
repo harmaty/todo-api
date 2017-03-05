@@ -1,5 +1,17 @@
+# == Schema Information
+#
+# Table name: boards
+#
+#  id          :integer          not null, primary key
+#  title       :string
+#  description :text
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+
 class Board < ActiveRecord::Base
-  def tasks
-    Task.where(board_id: self.id)
-  end
+
+  validates_presence_of :title
+
+  has_many :tasks
 end
