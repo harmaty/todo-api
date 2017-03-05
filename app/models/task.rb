@@ -18,4 +18,5 @@ class Task < ActiveRecord::Base
   validates_presence_of :title
 
   scope :completed, -> { where.not(completed_at: nil) }
+  scope :incomplete, -> { where(completed_at: nil) }
 end
