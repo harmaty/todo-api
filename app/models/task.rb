@@ -12,7 +12,10 @@
 #
 
 class Task < ActiveRecord::Base
-  def board
-    Board.find(self.board_id)
-  end
+
+  belongs_to :board
+
+  validates_presence_of :title
+
+  scope :completed, -> { where.not(completed_at: nil) }
 end

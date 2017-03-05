@@ -1,35 +1,37 @@
-class BoardsController < InheritedResources::Base
+class BoardsController < ApplicationController
+  before_action :set_resource, only: [:show, :update, :destroy]
 
   def index
     @collection = Board.all
-    render json: @collection
+    json_response @collection
   end
 
   def show
-    @resource = Board.where(:id => params[:id]).first
-    render json: @resource
+    json_response @resource
   end
 
   def create
-    @resource = Board.create(resource_params)
-    render json: @resource
+    @resource = Board.create!(resource_params)
+    json_response @resource, :created
   end
 
   def update
-    @resource = Board.where(:id => params[:id]).first
-    @resource.update(params[:board])
-    render json: @resource
+    @resource.update(resource_params)
+    head :no_content
   end
 
   def destroy
-    @resource = Board.where(:id => params[:id]).first
     @resource.destroy
-    render json: @resource
+    head :no_content
   end
 
   private
 
   def resource_params
     params.require(:board).permit(:title, :description)
+  end
+
+  def set_resource
+    @resource = Board.find(params[:id])
   end
 end
