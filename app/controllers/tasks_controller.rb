@@ -5,13 +5,8 @@ class TasksController < ApplicationController
   def index
     @collection = @parent_resource.tasks
 
-    if params[:type]
-      @collection = case params[:type].to_sym
-                      when :completed
-                        @collection.completed
-                      when :incomplete
-                        @collection.incomplete
-                    end
+    if params[:type] && %w(completed incomplete).include?(params[:type])
+      @collection = @collection.send params[:type]
     end
 
     json_response @collection
@@ -27,7 +22,7 @@ class TasksController < ApplicationController
   end
 
   def complete
-    @resource.update(completed_at: Time.now)
+    @resource.complete!
     head :no_content
   end
 

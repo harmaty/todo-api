@@ -19,4 +19,8 @@ class Task < ActiveRecord::Base
 
   scope :completed, -> { where.not(completed_at: nil) }
   scope :incomplete, -> { where(completed_at: nil) }
+
+  def complete!
+    update_attribute :completed_at, Time.now
+  end
 end
