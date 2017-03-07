@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'Dashboard API', type: :request do
   let!(:board) { create(:board) }
-  let!(:tasks) do
+
+  before do
     create_list(:task, 15, board: board)
     create_list(:task, 5, board: board, completed_at: Time.now)
   end

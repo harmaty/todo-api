@@ -2,12 +2,13 @@ require 'rails_helper'
 
 RSpec.describe 'Tasks API' do
   let!(:board) { create(:board) }
-  let!(:tasks) do
+  let(:board_id) { board.id }
+  let(:id) { Task.first.id }
+
+  before do
     create_list(:task, 15, board: board)
     create_list(:task, 5, board: board, completed_at: Time.now)
   end
-  let(:board_id) { board.id }
-  let(:id) { tasks.first.id }
 
   describe 'GET /boards/:board_id/tasks' do
 
@@ -147,9 +148,12 @@ RSpec.describe 'Tasks API' do
   end
 
   describe 'DELETE /boards/:id' do
-    before { delete "/boards/#{board_id}/tasks/#{id}" }
+    it 'deletes task from database' do
+      expect{ delete "/boards/#{board_id}/tasks/#{id}" }.to change(Task, :count).by(-1)
+    end
 
     it 'returns status code 204' do
+      delete "/boards/#{board_id}/tasks/#{id}"
       expect(response).to have_http_status(204)
     end
   end
